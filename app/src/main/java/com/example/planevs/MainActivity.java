@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         director.end();
-//        SoundEngine.sharedEngine().stopSound();     //结束声音
+        SoundEngine.sharedEngine().stopSound();     //结束声音
         Toast.makeText(getApplicationContext(),"游戏结束",Toast.LENGTH_LONG).show();
     }
 }

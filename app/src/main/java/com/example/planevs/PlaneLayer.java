@@ -108,12 +108,6 @@ public class PlaneLayer extends CCLayer {
         /*
         * 添加暂停开始精灵
         * */
-//        continue11 = CCSprite.sprite("pause_image.png");
-//        continue11.setPosition(260,360);
-////        continue11.setPosition(winSize.width / 2, winSize.height / 2);
-//        this.addChild(continue11, 0, pauseTag);
-//        continue11.setVisible(false);
-
 
         xin = new CCSprite[3];
         fires = new CCSprite[15];
@@ -190,18 +184,6 @@ public class PlaneLayer extends CCLayer {
     }
 
     public void move() {
-//        CCMoveBy moveBackground = CCMoveBy.action(10,CGPoint.ccp(0,-800));
-//        spriteBackground.runAction(moveBackground);
-//        ArrayList<CCSpriteFrame> framesbackground = new ArrayList<>();
-//        String formatbackground = "background%02d.png";
-//        for (int i = 1; i <=2; i++) {
-//            framesbackground.add(CCSprite.sprite(String.format(formatbackground,i)).displayedFrame());
-//
-//        }
-//        CCAnimation animbackground = CCAnimation.animation("move",.9f,framesbackground);
-//        CCAnimate animatebackground = CCAnimate.action(animbackground);
-//        CCRepeatForever repeatbackground = CCRepeatForever.action(animatebackground);
-//        spriteBackground.runAction(repeatbackground);
 
 
         CCMoveBy moveby = CCMoveBy.action(10, CGPoint.ccp(-300, -750));
@@ -319,7 +301,7 @@ public class PlaneLayer extends CCLayer {
                 }
             }
         }
-
+        //如果英雄飞机sprite与敌机相撞，则游戏暂停
         for (int i = 0; i < 15; i++) {
             if (sprite.getBoundingBox().contains(enemays[i].getPosition().x, enemays[i].getPosition().y)) {
 
@@ -329,18 +311,23 @@ public class PlaneLayer extends CCLayer {
                 enemays[i].stopAllActions();
                 sprite.setPosition(-300, -300);
                 enemays[i].setPosition(-300, -300);
+                this.onExit();              //游戏结束
+                SoundEngine.sharedEngine().stopSound();
                 break;
             }
         }
 
+        //如果英雄飞机sprite与微笑子弹碰撞则游戏暂停
         for (int i = 0; i < 15; i++) {
             if (sprite.getBoundingBox().contains(bombsmile[i].getPosition().x, bombsmile[i].getPosition().y)) {
                 sprite.stopAllActions();
                 sprite.setVisible(false);
-                firesFlag = false;
+                firesFlag = false;          //设置子弹可不可以发射的标志位
                 bombsmile[i].stopAllActions();
                 sprite.setPosition(-300, -300);
                 bombsmile[i].setPosition(-300, -300);
+                this.onExit();              //如果飞机和子弹碰撞，则游戏暂停
+                SoundEngine.sharedEngine().stopSound();// 暂停游戏的背景音乐
                 break;
             }
         }
@@ -358,7 +345,7 @@ public class PlaneLayer extends CCLayer {
     }
 
     /*
-     * 设置飞机子弹的发出位置、速度、时间、和数量、和背景的移动
+     * 设置飞机子弹的发出位置、速度、时间、和数量
      * */
 
     private CCSequence sbombsmileMove;  //延时和发射子弹同时执行
@@ -369,11 +356,9 @@ public class PlaneLayer extends CCLayer {
 
         bombsmile[numberOfbombsmile].setPosition((float) (400 * Math.random()), 1280);
         bombsmile[numberOfbombsmile].setVisible(true);
-//        delayTime = CCDelayTime.action(3);
-//        bombMoveBy = CCMoveBy.action(3.5f, position_.ccp(-10, -1800));
-//        CCSequence sbombsmileMove = CCSequence.actions(delayTime,bombMoveBy);
+
         bombsmile[numberOfbombsmile].runAction(CCMoveBy.action(3.5f, position_.ccp(-10, -1800)));
-//        bombsmile[numberOfbombsmile].runAction(sbombsmileMove);
+
         numberOfbombsmile++;
         if (numberOfbombsmile >= 15) {
             numberOfbombsmile -= 15;
